@@ -131,6 +131,28 @@
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebApi2Book.Common\WebApi2Book.Common.csproj">
+      <Project>{09c3ab35-aee9-4e3a-95aa-77a3f05140e6}</Project>
+      <Name>WebApi2Book.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApi2Book.Data.SqlServer\WebApi2Book.Data.SqlServer.csproj">
+      <Project>{08c1a188-e099-4429-9b6c-bf2b0b1f5b95}</Project>
+      <Name>WebApi2Book.Data.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApi2Book.Data\WebApi2Book.Data.csproj">
+      <Project>{cbd2d001-f033-413e-94a4-6f2e872fe79d}</Project>
+      <Name>WebApi2Book.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApi2Book.Web.Api.Models\WebApi2Book.Web.Api.Models.csproj">
+      <Project>{93f8b669-570b-47cb-9917-2c90af5a08a0}</Project>
+      <Name>WebApi2Book.Web.Api.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApi2Book.Web.Common\WebApi2Book.Web.Common.csproj">
+      <Project>{3a76d3e2-cb45-45e7-966f-c5da40cc763f}</Project>
+      <Name>WebApi2Book.Web.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
