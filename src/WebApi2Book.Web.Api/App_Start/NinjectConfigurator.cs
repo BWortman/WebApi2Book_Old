@@ -11,6 +11,8 @@ using Ninject.Activation;
 using Ninject.Web.Common;
 using WebApi2Book.Data.SqlServer.Mapping;
 
+using WebApi2Book.Web.Common;
+
 namespace WebApi2Book.Web.Api
 {
     public class NinjectConfigurator
@@ -48,6 +50,7 @@ namespace WebApi2Book.Web.Api
 
             container.Bind<ISessionFactory>().ToConstant(sessionFactory);
             container.Bind<ISession>().ToMethod(CreateSession).InRequestScope();
+            container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
         }
 
         private ISession CreateSession(IContext context)
