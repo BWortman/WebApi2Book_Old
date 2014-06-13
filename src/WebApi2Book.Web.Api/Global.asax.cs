@@ -5,6 +5,8 @@ using WebApi2Book.Common.TypeMapping;
 using WebApi2Book.Web.Api.Security;
 using WebApi2Book.Web.Common;
 
+using WebApi2Book.Common.Security;
+
 namespace WebApi2Book.Web.Api
 {
     public class WebApiApplication : HttpApplication
@@ -21,10 +23,14 @@ namespace WebApi2Book.Web.Api
         private void RegisterHandlers()
         {
             var logManager = WebContainerManager.Get<ILogManager>();
+            var userSession = WebContainerManager.Get<IUserSession>();
 
             GlobalConfiguration.Configuration.MessageHandlers.Add(
                 new BasicAuthenticationMessageHandler(logManager,
                     WebContainerManager.Get<IBasicSecurityService>()));
+
+            GlobalConfiguration.Configuration.MessageHandlers.Add(
+                new TaskDataSecurityMessageHandler(logManager, userSession));
         }
 
         protected void Application_Error()
