@@ -6,7 +6,6 @@ using WebApi2Book.Web.Api.MaintenanceProcessing;
 using WebApi2Book.Web.Api.Models;
 using WebApi2Book.Web.Common;
 using WebApi2Book.Web.Common.Routing;
-
 using WebApi2Book.Web.Common.Validation;
 
 namespace WebApi2Book.Web.Api.Controllers.V1
@@ -17,22 +16,27 @@ namespace WebApi2Book.Web.Api.Controllers.V1
     public class TasksController : ApiController
     {
         private readonly IAddTaskMaintenanceProcessor _addTaskMaintenanceProcessor;
+        private readonly IAllTasksInquiryProcessor _allTasksInquiryProcessor;
+        private readonly IPagedDataRequestFactory _pagedDataRequestFactory;
         private readonly ITaskByIdInquiryProcessor _taskByIdInquiryProcessor;
         private readonly IUpdateTaskMaintenanceProcessor _updateTaskMaintenanceProcessor;
-        private readonly IPagedDataRequestFactory _pagedDataRequestFactory;
-        private readonly IAllTasksInquiryProcessor _allTasksInquiryProcessor;
 
-        public TasksController(IAddTaskMaintenanceProcessor addTaskMaintenanceProcessor,
-            ITaskByIdInquiryProcessor taskByIdInquiryProcessor,
-    IUpdateTaskMaintenanceProcessor updateTaskMaintenanceProcessor,
-            IPagedDataRequestFactory pagedDataRequestFactory,
-             IAllTasksInquiryProcessor allTasksInquiryProcessor)
+        public TasksController(ITasksControllerDependencyBlock tasksControllerDependencyBlock)
         {
-            _addTaskMaintenanceProcessor = addTaskMaintenanceProcessor;
-            _taskByIdInquiryProcessor = taskByIdInquiryProcessor;
-            _updateTaskMaintenanceProcessor = updateTaskMaintenanceProcessor;
-            _pagedDataRequestFactory = pagedDataRequestFactory;
-            _allTasksInquiryProcessor = allTasksInquiryProcessor;
+            _addTaskMaintenanceProcessor = tasksControllerDependencyBlock.AddTaskMaintenanceProcessor;
+            _allTasksInquiryProcessor = tasksControllerDependencyBlock.AllTasksInquiryProcessor;
+            _pagedDataRequestFactory = tasksControllerDependencyBlock.PagedDataRequestFactory;
+            _taskByIdInquiryProcessor = tasksControllerDependencyBlock.TaskByIdInquiryProcessor;
+            _updateTaskMaintenanceProcessor = tasksControllerDependencyBlock.UpdateTaskMaintenanceProcessor;
+        }
+
+        [Route("", Name = "GetTasksRoute")]
+        public PagedDataInquiryResponse<Task> GetTasks(HttpRequestMessage requestMessage)
+        {
+            var request = _pagedDataRequestFactory.Create(requestMessage.RequestUri);
+
+            var tasks = _allTasksInquiryProcessor.GetTasks(request);
+            return tasks;
         }
 
         [Route("", Name = "AddTaskRoute")]
@@ -63,15 +67,5 @@ namespace WebApi2Book.Web.Api.Controllers.V1
             var task = _updateTaskMaintenanceProcessor.UpdateTask(id, updatedTask);
             return task;
         }
-
-        [Route("", Name = "GetTasksRoute")]
-        public PagedDataInquiryResponse<Task> GetTasks(HttpRequestMessage requestMessage)
-        {
-            var request = _pagedDataRequestFactory.Create(requestMessage.RequestUri);
-
-            var tasks = _allTasksInquiryProcessor.GetTasks(request);
-            return tasks;
-        }
-
     }
 }
